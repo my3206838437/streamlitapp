@@ -48,8 +48,8 @@ predata = pd.DataFrame([
      "yaowuzhonglei":YAOWUZHONGLEI}])
 predata = predata[list(model.feature_names_in_)]
 
-with expander:
-    st.dataframe(predata, hide_index=True, use_container_width=True)
+#with expander:
+#    st.dataframe(predata, hide_index=True, use_container_width=True)
 data = predata.copy()
 
 with st.expander("**预测结果**", True):
