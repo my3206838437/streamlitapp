@@ -9,8 +9,8 @@ st.set_page_config(
     layout="wide"
 )
 
-df = pd.read_excel("data1.xlsx")
-train = df[df["LABEL"]==1][["time", "yaowuzhonglei", "yibao", "ade", "xuanjiao"]]
+df = pd.read_excel("new_result8.xlsx")
+train = df[df["LABEL"]==1][["time", "yaowuzhonglei", "shouru", "ade", "xuanjiao"]]
 
 st.markdown('''
     <h1 style="font-size: 20px; text-align: center; color: black; background: #FCC422; border-radius: .5rem; margin-bottom: 1rem;">
@@ -18,7 +18,7 @@ st.markdown('''
     </h1>''', unsafe_allow_html=True)
 
 # 导入模型文件
-with open("LogisticRegression1282260.pkl", 'rb') as f:
+with open("LogisticRegression.pkl", 'rb') as f:
     model = pickle.load(f)
 
 with st.expander("**预测输入**", True):
@@ -27,14 +27,14 @@ with st.expander("**预测输入**", True):
 #d1 = {"依从性差":0, "依从性良好":1}
 d2 = {"1年":1, "2年":2, "3年":3, "4年":4, "5年及以上":5}
 d3 = {"SERM":1, "AI":2}
-d4 = {"职工医保":1, "居民医保":2, "其他保障":3}
+d4 = {"低收入":1, "中收入":2, "高收入":3}
 d5 = {"有":1, "无":0}
 d6 = {"有":1, "无":0}
 
 #MPR	= d1[col[0].selectbox("依从性", ["依从性差", "依从性良好"])]
 TIME = d2[col[0].selectbox("用药时间", ["1年", "2年", "3年", "4年", "5年及以上"])]
 YAOWUZHONGLEI = d3[col[1].selectbox("药物种类", ["SERM", "AI"])]
-YIBAO = d4[col[2].selectbox("医保类型", ["职工医保", "居民医保", "其他保障"])]
+SHOURU = d4[col[2].selectbox("经济收入", ["低收入", "中收入", "高收入"])]
 ADE	= d5[col[3].selectbox("不良反应", ["有", "无"])]
 XUANJIAO = d6[col[4].selectbox("药物宣教", ["有", "无"])]
 
@@ -42,12 +42,13 @@ predata = pd.DataFrame([
     {#"MPR":MPR, 
      "time":TIME, 
      "yaowuzhonglei":YAOWUZHONGLEI, 
-     "yibao":YIBAO, 
+     "shouru":SHOURU, 
      "ade":ADE, 
      "xuanjiao":XUANJIAO}])
 data = predata.copy()
 
 with st.expander("**预测结果**", True):
+    #st.write(model.predict(predata))
     d = model.predict_proba(predata).flatten()
     
     # 创建仪表图  
@@ -67,12 +68,3 @@ with st.expander("**预测结果**", True):
 
     # 显示仪表图  
     st.plotly_chart(gauge_fig)
-
-
-
-
-
-
-
-
-
