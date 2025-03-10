@@ -21,7 +21,8 @@ st.markdown('''
 with open("LogisticRegression.pkl", 'rb') as f:
     model = pickle.load(f)
 
-with st.expander("**预测输入**", True):
+expander = st.expander("**预测输入**", True)
+with expander:
     col = st.columns(5)
 
 #d1 = {"依从性差":0, "依从性良好":1}
@@ -41,10 +42,14 @@ XUANJIAO = d6[col[4].selectbox("药物宣教", ["有", "无"])]
 predata = pd.DataFrame([
     {#"MPR":MPR, 
      "time":TIME, 
-     "yaowuzhonglei":YAOWUZHONGLEI, 
      "shouru":SHOURU, 
-     "ade":ADE, 
-     "xuanjiao":XUANJIAO}])
+     "ade":ADE,
+     "xuanjiao":XUANJIAO,
+     "yaowuzhonglei":YAOWUZHONGLEI}])
+predata = predata[list(model.feature_names_in_)]
+
+with expander:
+    st.dataframe(predata, hide_index=True, use_container_width=True)
 data = predata.copy()
 
 with st.expander("**预测结果**", True):
