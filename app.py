@@ -73,3 +73,4 @@ with st.expander("**预测结果**", True):
 
     # 显示仪表图  
     st.plotly_chart(gauge_fig)
+
